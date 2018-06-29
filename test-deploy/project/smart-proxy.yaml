@@ -1,0 +1,30 @@
+apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2
+kind: Deployment
+metadata:
+  name: smart-proxy
+spec:
+  selector:
+    matchLabels:
+      app: smart-proxy-service
+  replicas: 1
+  template: # create pods using pod definition in this template
+    metadata:
+      labels:
+        app: smart-proxy-service
+    spec:
+      containers:
+      - name: smart-proxy-service
+        image: reg.qiniu.com/exiaohao/smart-proxy:v0.1
+        ports:
+        - containerPort: 9999
+        command: ["go", "run", "server.go"]
+        env:
+        - name: REDIS_DSN
+          value: redis-service
+        - name: LISTEN_PORT
+          value: "9999"
+        resources:
+          limits:
+            memory: "1024M"
+      imagePullSecrets:
+      - name: qiniu
