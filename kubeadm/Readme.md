@@ -17,9 +17,22 @@ Make sure `kubeadm` `kubectl` and `kubelet` has installed and `systemctl status 
 4. Edit `calico.yaml`, set `etcd` and other configs, run `kubeadm apply -f calico.yaml`
 
 ## Troubleshooting
+#### x509 certificate error
 Run `kubectl ...` receive:
 ```Unable to connect to the server: x509: certificate signed by unknown authority (possibly because of "crypto/rsa: verification error" while trying to verify candidate authority certificate "kubernetes")```
 
 Realted issue: https://github.com/kubernetes/kubernetes/issues/48378
 
 Add `$KUBECONFIG` to `/etc/kubernetes/kubelet.conf`
+
+### RBAC error
+Run `kubectl apply -f rbac.yaml` and receive:
+```Error from server (Forbidden): error when retrieving current configuration of:
+&{0xc420097980 0xc4203d7dc0  calico-kube-controllers rbac.yaml 0xc420c188c0  false}
+from server for: "rbac.yaml": clusterroles.rbac.authorization.k8s.io "calico-kube-controllers" is forbidden: User "system:node:hao-k8s-1" cannot get clusterroles.rbac.authorization.k8s.io at the cluster scope```
+
+Related issue: https://github.com/kubernetes/kops/issues/3551
+
+Kubernetes Doc - https://kubernetes.io/docs/reference/access-authn-authz/rbac/
+
+
