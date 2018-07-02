@@ -1,0 +1,13 @@
+kind: Service
+apiVersion: v1
+metadata:
+  namespace: test-deploy
+  name: smart-proxy
+spec:
+  type: ClusterIP
+  selector:
+    app: smart-proxy
+  ports:
+  - protocol: TCP
+    port: 9999
+    targetPort: 9999

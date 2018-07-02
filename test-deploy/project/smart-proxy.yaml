@@ -2,6 +2,7 @@ apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2
 kind: Deployment
 metadata:
   name: smart-proxy
+  namespace: test-deploy
 spec:
   selector:
     matchLabels:
@@ -20,7 +21,7 @@ spec:
         command: ["go", "run", "server.go"]
         env:
         - name: REDIS_DSN
-          value: redis-service
+          value: smart-proxy-redis-service
         - name: LISTEN_PORT
           value: "9999"
         resources:

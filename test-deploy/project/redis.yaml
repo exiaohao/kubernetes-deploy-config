@@ -1,0 +1,23 @@
+apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2
+kind: Deployment
+metadata:
+  name: smart-proxy-redis
+  namespace: test-deploy
+spec:
+  selector:
+    matchLabels:
+      app: smart-proxy-redis
+  replicas: 1
+  template: # create pods using pod definition in this template
+    metadata:
+      labels:
+        app: smart-proxy-redis
+    spec:
+      containers:
+      - name: smart-proxy-redis
+        image: redis:4-alpine
+        ports:
+        - containerPort: 6379
+        resources:
+          limits:
+            memory: "1024M"
