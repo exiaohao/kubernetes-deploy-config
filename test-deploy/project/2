@@ -4,16 +4,13 @@ metadata:
   name: smart-proxy
   namespace: test-deploy
   labels:
-    app: smart-proxy-service
+    app: smart-proxy-backend
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: smart-proxy-service
+      app: smart-proxy-backend
   template: # create pods using pod definition in this template
-    metadata:
-      labels:
-        app: smart-proxy-service
     spec:
       containers:
       - name: smart-proxy-service

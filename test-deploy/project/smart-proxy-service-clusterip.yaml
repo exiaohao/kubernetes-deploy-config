@@ -6,8 +6,8 @@ metadata:
 spec:
   type: ClusterIP
   selector:
-    app: smart-proxy
+    app: smart-proxy-service
   ports:
   - protocol: TCP
-    port: 9999
+    port: 80
     targetPort: 9999
