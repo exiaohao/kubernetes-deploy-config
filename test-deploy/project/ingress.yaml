@@ -1,0 +1,19 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  namespace: test-deploy
+  name: sp-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  tls:
+  - secretName: app-secret
+  rules:
+  - host: hao-k8s-1
+    address: 172.20.0.51
+    http:
+      paths:
+      - path: /smart-proxy
+        backend:
+          serviceName: smart-proxy
+          servicePort: 9999
