@@ -11,9 +11,7 @@ spec:
   http:
   - match:
     - uri:
-        prefix: /status
-    - uri:
-        prefix: /delay
+        prefix: /
     route:
     - destination:
         port:

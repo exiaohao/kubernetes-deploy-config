@@ -1,7 +1,8 @@
 apiVersion: networking.istio.io/v1alpha3
 kind: Gateway
 metadata:
-  name: httpbin-gateway
+  name: smart-proxy-gateway
+  namespace: test-deploy
 spec:
   selector:
     istio: ingressgateway # use Istio default gateway implementation
@@ -11,4 +12,4 @@ spec:
       name: http
       protocol: HTTP
     hosts:
-    - "httpbin.example.com"
+    - "*"
