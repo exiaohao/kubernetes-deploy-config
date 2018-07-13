@@ -1,0 +1,13 @@
+apiVersion: projectcalico.org/v3
+kind: Node
+metadata:
+  creationTimestamp: 2018-06-29T03:42:00Z
+  name: hao-k8s-1
+  resourceVersion: "21272"
+  uid: 61702a8e-7b4e-11e8-ae50-00155d003200
+spec:
+  bgp:
+    ipv4Address: 172.20.0.51/24
+  orchRefs:
+  - nodeName: hao-k8s-1
+    orchestrator: k8s

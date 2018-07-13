@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: test-deploy
+  name: smart-proxy-redis-service
+spec:
+  type: NodePort
+  ports:
+  - port: 6379
+    protocol: TCP
+    targetPort: 6379
+    nodePort: 30000
+  selector:
+    app: smart-proxy-redis

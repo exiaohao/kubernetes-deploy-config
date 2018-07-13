@@ -1,0 +1,13 @@
+kind: Service
+apiVersion: v1
+metadata:
+  namespace: test-deploy
+  name: smart-proxy-redis-service
+spec:
+  type: ClusterIP
+  selector:
+    app: smart-proxy-redis
+  ports:
+  - protocol: TCP
+    port: 6379
+    targetPort: 6379

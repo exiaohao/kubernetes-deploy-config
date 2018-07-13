@@ -8,3 +8,5 @@ etcd:
 networking:
   serviceSubnet: 172.21.0.0/16
   podSubnet: 10.98.0.0/16
+featureGates:	# In Kubernetes 1.11, CoreDNS has graduated to General Availability (GA) and is installed by default.
+  CoreDNS: false
