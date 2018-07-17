@@ -1,31 +1,30 @@
 apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2
 kind: Deployment
 metadata:
-  name: smart-proxy
-  namespace: test-deploy
+  name: tapi
+  namespace: songhao
   labels:
-    app: smart-proxy-service
-    version: v1.0
+    app: tapi-svc
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
-      app: smart-proxy-service
+      app: tapi-svc
   template: # create pods using pod definition in this template
     metadata:
       labels:
-        app: smart-proxy-service
+        app: tapi-svc
     spec:
       containers:
-      - name: smart-proxy-service
-        image: reg.qiniu.com/exiaohao/smart-proxy:v1.0
+      - name: tapi-svc
+        image: reg.qiniu.com/exiaohao/smart-proxy:latest
         imagePullPolicy: Always
         ports:
         - containerPort: 9999
         command: ["go", "run", "server.go"]
         env:
         - name: REDIS_DSN
-          value: redis://smart-proxy-redis-service:6379/0
+          value: redis://tapi-redis-service:6379/0
         - name: LISTEN_PORT
           value: "9999"
         - name: GIN_MODE
@@ -34,4 +33,20 @@ spec:
           limits:
             memory: "1024M"
       imagePullSecrets:
-      - name: qiniu
+      - name: qiniu-exiaohao
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: songhao
+  name: tapi-service
+spec:
+  type: NodePort
+  externalIPs:
+  - 183.136.237.66
+  ports:
+  - port: 9999
+    protocol: TCP
+    nodePort: 30901
+  selector:
+    app: tapi-svc

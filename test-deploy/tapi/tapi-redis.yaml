@@ -1,0 +1,37 @@
+apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2
+kind: Deployment
+metadata:
+  name: tapi-redis
+  namespace: songhao
+spec:
+  selector:
+    matchLabels:
+      app: tapi-redis
+  replicas: 1
+  template: # create pods using pod definition in this template
+    metadata:
+      labels:
+        app: tapi-redis
+    spec:
+      containers:
+      - name: tapi-redis
+        image: redis:4-alpine
+        ports:
+        - containerPort: 6379
+        resources:
+          limits:
+            memory: "1024M"
+---
+kind: Service
+apiVersion: v1
+metadata:
+  namespace: songhao
+  name: tapi-redis-service
+spec:
+  type: ClusterIP
+  selector:
+    app: tapi-redis
+  ports:
+  - protocol: TCP
+    port: 6379
+    targetPort: 6379
