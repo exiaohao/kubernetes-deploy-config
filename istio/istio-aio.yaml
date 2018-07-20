@@ -17,11 +17,11 @@ spec:
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
 metadata:
-  name: test-virtualservice
+  name: test-virtualservice-v1
   namespace: test-deploy
 spec:
   hosts:
-  - "*"
+  - "test-service-a.deploy.com"
   gateways:
   - smart-proxy-gateway
   http:
@@ -32,4 +32,24 @@ spec:
     - destination:
         port:
           number: 80
-        host: smart-proxy-service
+        host: smart-proxy-service-only-v1
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: test-virtualservice-v2
+  namespace: test-deploy
+spec:
+  hosts:
+  - "test-service-b.deploy.com"
+  gateways:
+  - smart-proxy-gateway
+  http:
+  - match:
+    - uri:
+        prefix: /
+    route:
+    - destination:
+        port:
+          number: 80
+        host: smart-proxy-service-only-v2
