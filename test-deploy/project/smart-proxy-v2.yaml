@@ -5,7 +5,7 @@ metadata:
   namespace: test-deploy
   labels:
     app: smart-proxy-service
-    version: v2.0
+    deployVersion: v2.0
 spec:
   replicas: 2
   selector:

@@ -1,0 +1,35 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: smart-proxy-service
+    deployVersion: v1.0
+  name: smart-proxy-service-only-v1
+  namespace: test-deploy
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 9999
+  selector:
+    app: smart-proxy-service
+    deployVersion: v1.0
+  type: ClusterIP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: smart-proxy-service
+    deployVersion: v2.0
+  name: smart-proxy-service-only-v2
+  namespace: test-deploy
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 9999
+  selector:
+    app: smart-proxy-service
+    deployVersion: v2.0
+  type: ClusterIP
