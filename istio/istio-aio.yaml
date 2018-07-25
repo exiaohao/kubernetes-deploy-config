@@ -12,7 +12,18 @@ spec:
       name: http
       protocol: HTTP
     hosts:
-    - "*"
+    - "test-service-a.deploy.com"
+    - "test-service-b.deploy.com"
+  - port:
+      number: 443
+      name: https
+      protocol: HTTPS
+    hosts:
+    - "hao.meshlab.cn"
+    tls:
+      mode: SIMPLE #enables HTTPS on this port
+      serverCertificate: /etc/istio/ingressgateway-certs/tls.crt
+      privateKey: /etc/istio/ingressgateway-certs/tls.key
 ---
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
@@ -41,6 +52,7 @@ metadata:
   namespace: test-deploy
 spec:
   hosts:
+  - "hao.meshlab.cn"
   - "test-service-b.deploy.com"
   gateways:
   - smart-proxy-gateway
