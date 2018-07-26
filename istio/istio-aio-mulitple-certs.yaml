@@ -27,6 +27,16 @@ spec:
       mode: SIMPLE #enables HTTPS on this port
       serverCertificate: /etc/istio/ingressgateway-certs/tls.crt
       privateKey: /etc/istio/ingressgateway-certs/tls.key
+  - port:
+      number: 443
+      name: https
+      protocol: HTTPS
+    hosts:
+    - "static.cloudeliver.cn"
+    tls:
+      mode: SIMPLE
+      serverCertificate: /root/tls-certs/static.cloudeliver.cn.crt
+      privateKey: /root/tls-certs/static.cloudeliver.cn.key
 ---
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
@@ -57,6 +67,7 @@ metadata:
 spec:
   hosts:
   - "test-service-b.deploy.com"
+  - "static.cloudeliver.cn"
   gateways:
   - smart-proxy-gateway
   http:
