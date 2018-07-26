@@ -1,5 +1,10 @@
 ## Istio
 
+Enable grafana
+```bash
+kubectl apply -f install/kubernetes/addons/grafana.yaml
+```
+
 Deploy
 ```bash
 istioctl create -f istio-aio.yaml
