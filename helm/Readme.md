@@ -10,6 +10,17 @@ helm template install/kubernetes/helm/istio --name istio --namespace istio-syste
 kubectl apply -f CUSTOMIZED_FILE.yaml
 ```
 
+#### Functional verification
+##### TLS support
+- [x] TLSv1
+- [x] TLSv1.1
+- [x] TLSv1.2
+
+#### Multiple certificates in single ingress
+##### Default 
+Only support *ONE* certificate
+
+
 #### Troubleshooting
 
 ##### Mixer not available
