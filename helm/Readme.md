@@ -1,5 +1,15 @@
 ### Install
 
+#### Create template with HELM
+```
+helm template install/kubernetes/helm/istio --name istio --namespace istio-system --set sidecarInjectorWebhook.enabled=false --set galley.enabled=false > ~/istio-with-mixer.yaml
+```
+
+#### Install istio (with customized components)
+```
+kubectl apply -f CUSTOMIZED_FILE.yaml
+```
+
 #### Troubleshooting
 
 ##### configmaps is forbidden
