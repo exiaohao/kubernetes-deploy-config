@@ -12,6 +12,21 @@ kubectl apply -f CUSTOMIZED_FILE.yaml
 
 #### Troubleshooting
 
+##### Mixer not available
+Result
+```bash
+[libprotobuf ERROR src/istio/mixerclient/report_batch.cc:83] Mixer Report failed with: UNAVAILABLE:Cluster not available
+```
+Caused by CheckServer & ReportServer aren't applied with NON-Mixer environment, there's no endpoints to collect data
+
+```
+# To disable the mixer completely (including metrics), comment out
+# the following lines
+mixerCheckServer: istio-policy.istio-system.svc.cluster.local:15004
+mixerReportServer: istio-telemetry.istio-system.svc.cluster.local:15004
+```
+
+
 ##### configmaps is forbidden
 ```bash
 helm list
