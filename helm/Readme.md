@@ -1,4 +1,4 @@
-### Install
+## Install
 
 #### Create template with HELM
 ```
@@ -10,8 +10,8 @@ helm template install/kubernetes/helm/istio --name istio --namespace istio-syste
 kubectl apply -f CUSTOMIZED_FILE.yaml
 ```
 
-#### Functional verification
-##### TLS support
+## Functional verification
+#### TLS support
 - [x] TLSv1
 - [x] TLSv1.1
 - [x] TLSv1.2
@@ -21,9 +21,8 @@ kubectl apply -f CUSTOMIZED_FILE.yaml
 Only support *ONE* certificate
 
 
-#### Troubleshooting
-
-##### Mixer not available
+## Troubleshooting
+#### Mixer not available
 Result
 ```bash
 [libprotobuf ERROR src/istio/mixerclient/report_batch.cc:83] Mixer Report failed with: UNAVAILABLE:Cluster not available
@@ -37,8 +36,7 @@ mixerCheckServer: istio-policy.istio-system.svc.cluster.local:15004
 mixerReportServer: istio-telemetry.istio-system.svc.cluster.local:15004
 ```
 
-
-##### configmaps is forbidden
+#### configmaps is forbidden
 ```bash
 helm list
 ```
@@ -50,5 +48,4 @@ kubectl create serviceaccount --namespace kube-system tiller
 kubectl create clusterrolebinding tiller-cluster-rule --clusterrole=cluster-admin --serviceaccount=kube-system:tiller
 kubectl patch deploy --namespace kube-system tiller-deploy -p '{"spec":{"template":{"spec":{"serviceAccount":"tiller"}}}}'      
 helm init --service-account tiller --upgrade
-```
- 
+``` 
