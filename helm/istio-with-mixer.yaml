@@ -1,3 +1,4 @@
+# Deploy version
 ---
 # Source: istio/charts/mixer/templates/configmap.yaml
 apiVersion: v1
