@@ -73,3 +73,8 @@ horizontalpodautoscaler.autoscaling/istio-egressgateway unchanged
 horizontalpodautoscaler.autoscaling/istio-ingress unchanged
 horizontalpodautoscaler.autoscaling/istio-ingressgateway unchanged
 ```
+
+### Istio with mixer
+```bash
+helm template install/kubernetes/helm/istio --name istio --namespace istio-system --set sidecarInjectorWebhook.enabled=false --set galley.enabled=false > ~/istio-with-mixer.yaml
+```
