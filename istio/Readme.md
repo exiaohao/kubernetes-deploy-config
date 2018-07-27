@@ -10,10 +10,38 @@ Deploy
 istioctl create -f istio-aio.yaml
 ```
 
-Add TLS certificate & key
+#### Add TLS certificate & key
+Add key & certificate to secret
 ```bash
 kubectl create -n istio-system secret tls istio-ingressgateway-ca-certs --key hao.meshlab.cn.key --cert hao.meshlab.cn.crt
 ```
+> The secret MUST be called `istio-ingressgateway-certs` in the `istio-system` namespace, or it will not be mounted and available to the Istio gateway.
+> Thus generally only support ONE certificate
+
+Define a Gateway with a server section for https/443.
+```yaml
+spec:
+  selector:
+    istio: ingressgateway
+  servers:
+  - port:
+      number: 443
+      name: https
+      protocol: HTTPS
+    hosts:
+    - "hao.meshlab.cn"
+    tls:
+      mode: SIMPLE #enables HTTPS on this port
+      serverCertificate: /etc/istio/ingressgateway-certs/tls.crt
+      privateKey: /etc/istio/ingressgateway-certs/tls.key
+```
+> The location of the certificate and key MUST be `/etc/istio/ingressgateway-certs`, or the gateway will fail to load them.
+
+To check the certificate and key was successfully loaded by istio gateway, use
+```bash
+kubectl exec -it -n istio-system $(kubectl -n istio-system get pods -l istio=ingressgateway -o jsonpath='{.items[0].metadata.name}') -- ls -al /etc/istio/ingressgateway-ca-certs
+```
+will show you tls.key & tls.crt was mounted into ingressgateway
 
 ## Functional verification
 #### TLS support
