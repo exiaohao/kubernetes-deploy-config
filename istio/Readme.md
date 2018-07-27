@@ -39,7 +39,7 @@ spec:
 
 To check the certificate and key was successfully loaded by istio gateway, use
 ```bash
-kubectl exec -it -n istio-system $(kubectl -n istio-system get pods -l istio=ingressgateway -o jsonpath='{.items[0].metadata.name}') -- ls -al /etc/istio/ingressgateway-ca-certs
+kubectl exec -it -n istio-system $(kubectl -n istio-system get pods -l istio=ingressgateway -o jsonpath='{.items[0].metadata.name}') -- ls -al /etc/istio/ingressgateway-certs
 ```
 will show you tls.key & tls.crt was mounted into ingressgateway
 
