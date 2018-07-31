@@ -1,13 +1,13 @@
 ## Tailor log
-#### Istio version 1.0.0
+#### Istio version
+v1.0.0
 
-#### AT FIRST
+### AT FIRST
 ```bash
 kubectl create namespace istio-system
 ```
 
-
-#### Replace / Remove fields
+### Replace / Remove fields
 | field | origin status | edited |
 |--|--|--|
 | disablePolicyChecks | `false` | `true` |
@@ -26,9 +26,8 @@ kubectl create namespace istio-system
 | HorizontalPodAutoscaler: istio-policy | / | T.B.D. |
 | HorizontalPodAutoscaler: istio-telemetry | / | T.B.D. |
 | HorizontalPodAutoscaler: istio-pilot | / | T.B.D. |
-| 
 
-#### Images
+### Images
 | App | Image | localImage |
 |--|--|--|
 | statsd-prom-bridge | docker.io/prom/statsd-exporter:v0.6.0 | |
