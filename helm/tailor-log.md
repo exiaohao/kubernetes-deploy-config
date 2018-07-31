@@ -20,7 +20,6 @@ kubectl create namespace istio-system
 | --zipkinAddress | `specified` | `disabled` `L:2347-2348` |
 | --trace_zipkin_url | `specified` | `disabled` `L:2516` |
 | --trace_zipkin_url | `specified` | `disabled` `L:2613` |
-
 | prometheus | `enabled` | `disabled` `Todo` `L:2824` |
 | HorizontalPodAutoscaler: istio-egressgateway | / | T.B.D. |
 | HorizontalPodAutoscaler: istio-ingressgateway | / | T.B.D. |
