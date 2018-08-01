@@ -3,6 +3,10 @@
 v1.0.0
 
 ### AT FIRST
+Edit `install/kubernetes/helm/istio/values.yaml`
+Find `imagePullSecrets`, Add private secrets (if required)
+Update every nodes' `hub` address to your private registry
+
 ```bash
 kubectl create namespace istio-system
 ```
@@ -10,8 +14,8 @@ kubectl create namespace istio-system
 ### Replace / Remove fields
 | field | origin status | edited |
 |--|--|--|
-| disablePolicyChecks | `false` | `true` |
-| enableTracing | `true` | `false` |
+| disablePolicyChecks | `false` | `true` (values.yaml) |
+| enableTracing | `true` | `false` (values.yaml) |
 | mixerCheckServer | istio-policy.istio-system.svc.cluster.local:9091 | `disabled` | 
 | mixerReportServer | istio-telemetry.istio-system.svc.cluster.local:9091 | `disabled` |
 | zipkinAddress | zipkin.istio-system:9411 | `disabled` |
