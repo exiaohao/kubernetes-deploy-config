@@ -3,10 +3,12 @@
 v1.0.0
 
 ### AT FIRST
+#### Use privage registry & add imagePullSecrets
 Edit `install/kubernetes/helm/istio/values.yaml`
 Find `imagePullSecrets`, Add private secrets (if required)
 Update every nodes' `hub` address to your private registry
 
+#### Add istio-system namespace
 ```bash
 kubectl create namespace istio-system
 ```
