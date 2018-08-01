@@ -30,6 +30,7 @@ kubectl create namespace istio-system
 ### Images
 | App | Image | localImage |
 |--|--|--|
+| hyperkube | quay.io/coreos/hyperkube:v1.7.6_coreos.0 |  |
 | statsd-prom-bridge | docker.io/prom/statsd-exporter:v0.6.0 | |
 | istio-egressgateway | docker.io/istio/proxyv2:1.0.0 | |
 | istio-ingressgateway | docker.io/istio/proxyv2:1.0.0 | |
