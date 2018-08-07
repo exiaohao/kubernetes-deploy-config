@@ -32,12 +32,8 @@ spec:
     - "test.meshlab.cn"
     tls:
       mode: SIMPLE
-      serverCertificate: /etc/istio/ingressgateway-test_meshlab_cn-certs/tls.crt
-      privateKey: /etc/istio/ingressgateway-test_meshlab_cn-certs/tls.key
-  secretVolumes:
-  - name: ingressgateway-fuck
-    secretName: istio-ingressgateway-fuck-certs
-    mountPath: /etc/istio/cert-fuck
+      serverCertificate: /etc/istio/ingressgateway-ca-certs/tls.crt
+      privateKey: /etc/istio/ingressgateway-ca-certs/tls.key
 ---
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService

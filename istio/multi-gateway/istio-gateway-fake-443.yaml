@@ -1,0 +1,19 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: https-fake-gateway
+  namespace: default
+spec:
+  selector:
+    istio: ingressgateway # use Istio default gateway implementation
+  servers:
+  - port:
+      number: 443
+      name: test-https
+      protocol: HTTPS
+    hosts:
+    - "fake.meshlab.cn"
+    tls:
+      mode: SIMPLE
+      serverCertificate: /etc/istio/ingressgateway/tls.crt
+      privateKey: /etc/istio/ingressgateway/tls.key
