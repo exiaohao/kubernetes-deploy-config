@@ -1,0 +1,61 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: default-gateway
+  namespace: default
+spec:
+  selector:
+    istio: ingressgateway # use Istio default gateway implementation
+  servers:
+  - port:
+      number: 80
+      name: http
+      protocol: HTTP
+    hosts:
+    - "test.meshlab.cn"
+    - "example.meshlab.cn"
+  - port:
+      number: 443
+      name: https
+      protocol: HTTPS
+    hosts:
+    - "example.meshlab.cn"
+    tls:
+      mode: SIMPLE
+      serverCertificate: /etc/istio/ingressgateway-certs/tls.crt
+      privateKey: /etc/istio/ingressgateway-certs/tls.key
+  - port:
+      number: 443
+      name: test-https
+      protocol: HTTPS
+    hosts:
+    - "test.meshlab.cn"
+    tls:
+      mode: SIMPLE
+      serverCertificate: /etc/istio/ingressgateway-test_meshlab_cn-certs/tls.crt
+      privateKey: /etc/istio/ingressgateway-test_meshlab_cn-certs/tls.key
+  secretVolumes:
+  - name: ingressgateway-fuck
+    secretName: istio-ingressgateway-fuck-certs
+    mountPath: /etc/istio/cert-fuck
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: test-service
+  namespace: default
+spec:
+  hosts:
+  - "test.meshlab.cn"
+  - "example.meshlab.cn"
+  gateways:
+  - default-gateway
+  http:
+  - match:
+    - uri:
+        prefix: /
+    route:
+    - destination:
+        port:
+          number: 8000
+        host: ngx-service

@@ -18,3 +18,8 @@ metadata:
 ```bash
 kubectl create secret docker-registry [SECRET-NAME] --docker-server=[REGISTRY-SERVER] --docker-username=[DOCKER-USERNAME] --docker-password=[DOCKER-PASSWORD] --docker-email=[DOCKER-EMAIL] -n [NAMESPACE]
 ```
+
+## Get admin token
+```bash
+kubectl -n kube-system describe secret `kubectl -n kube-system get secret|grep admin-token|cut -d " " -f1` | grep "token:" | tr -s " " | cut -d " " -f2
+```

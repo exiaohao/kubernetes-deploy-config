@@ -1,0 +1,40 @@
+apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2
+kind: Deployment
+metadata:
+  name: ngx-worker
+  namespace: default
+  labels:
+    app: ngx-worker
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: ngx-worker
+  template: # create pods using pod definition in this template
+    metadata:
+      labels:
+        app: ngx-worker
+    spec:
+      containers:
+      - name: ngx-worker
+        image: nginx:alpine
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 80
+        resources:
+          limits:
+            memory: "1024M"
+---
+kind: Service
+apiVersion: v1
+metadata:
+  namespace: default
+  name: ngx-service
+spec:
+  type: ClusterIP
+  selector:
+    app: ngx-worker
+  ports:
+  - protocol: TCP
+    port: 8000
+    targetPort: 80
