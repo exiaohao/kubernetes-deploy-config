@@ -2316,7 +2316,7 @@ spec:
         sidecar.istio.io/inject: "false"
         scheduler.alpha.kubernetes.io/critical-pod: ""
     spec:
-      hostNetwork: true
+      hostNetwork: false
       serviceAccountName: istio-ingressgateway-service-account
       containers:
         - name: ingressgateway

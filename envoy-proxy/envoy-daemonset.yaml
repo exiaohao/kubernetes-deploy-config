@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: spock-api-daemon
+  namespace: songhao
+  labels:
+    app: spock-api-proxy
+spec:
+  selector:
+    matchLabels:
+      app: spock-api-proxy
+  template:
+    metadata:
+      labels:
+        app: spock-api-proxy
+    spec:
+      tolerations:
+      - key: node-role.kubernetes.io/master
+        effect: NoSchedule
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                - key: kubernetes.io/hostname
+                  operator: In
+                  values:
+                    - cs60
+                    - cs61
+                    - cs62
+
+      hostNetwork: true
+      containers:
+      - name: spock-api-proxy
+        image: envoyproxy/envoy
+        ports:
+        - containerPort: 10101
+        volumeMounts:
+        - name: envoy-config
+          mountPath: /etc/envoy
+      volumes:
+      - name: envoy-config
+        configMap:
+          name: envoy-spock-proxy-config
