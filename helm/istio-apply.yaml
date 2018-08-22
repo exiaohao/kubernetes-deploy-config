@@ -504,7 +504,7 @@ data:
   mesh: |-
     # Set the following variable to true to disable policy checks by the Mixer.
     # Note that metrics will still be reported to the Mixer.
-    disablePolicyChecks: false
+    disablePolicyChecks: true
 
     # Set enableTracing to false to disable request tracing.
     enableTracing: true
@@ -513,7 +513,7 @@ data:
     accessLogFile: "/dev/stdout"
     #
     # Deprecated: mixer is using EDS
-    mixerCheckServer: istio-policy.istio-system.svc.cluster.local:9091
+    # mixerCheckServer: istio-policy.istio-system.svc.cluster.local:9091
     mixerReportServer: istio-telemetry.istio-system.svc.cluster.local:9091
 
     # Unix Domain Socket through which envoy communicates with NodeAgent SDS to get
@@ -562,7 +562,7 @@ data:
       proxyAdminPort: 15000
       #
       # Zipkin trace collector
-      zipkinAddress: zipkin.istio-system:9411
+      # zipkinAddress: zipkin.istio-system:9411
       #
       # Statsd metrics collector converts statsd metrics into Prometheus metrics.
       statsdUdpAddress: istio-statsd-prom-bridge.istio-system:9125
@@ -2236,33 +2236,6 @@ spec:
     istio: galley
 
 ---
-# Source: istio/charts/gateways/templates/service.yaml
-
-apiVersion: v1
-kind: Service
-metadata:
-  name: istio-egressgateway
-  namespace: istio-system
-  annotations:
-  labels:
-    chart: gateways-1.0.0
-    release: istio
-    heritage: Tiller
-    app: istio-egressgateway
-    istio: egressgateway
-spec:
-  type: ClusterIP
-  selector:
-    app: istio-egressgateway
-    istio: egressgateway
-  ports:
-    -
-      name: http2
-      port: 80
-    -
-      name: https
-      port: 443
----
 apiVersion: v1
 kind: Service
 metadata:
@@ -2596,146 +2569,6 @@ spec:
       - name: config
         configMap:
           name: istio-galley-configuration
-      affinity:      
-        nodeAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            nodeSelectorTerms:
-            - matchExpressions:
-              - key: beta.kubernetes.io/arch
-                operator: In
-                values:
-                - amd64
-                - ppc64le
-                - s390x
-          preferredDuringSchedulingIgnoredDuringExecution:
-          - weight: 2
-            preference:
-              matchExpressions:
-              - key: beta.kubernetes.io/arch
-                operator: In
-                values:
-                - amd64
-          - weight: 2
-            preference:
-              matchExpressions:
-              - key: beta.kubernetes.io/arch
-                operator: In
-                values:
-                - ppc64le
-          - weight: 2
-            preference:
-              matchExpressions:
-              - key: beta.kubernetes.io/arch
-                operator: In
-                values:
-                - s390x
-
----
-# Source: istio/charts/gateways/templates/deployment.yaml
-
-apiVersion: extensions/v1beta1
-kind: Deployment
-metadata:
-  name: istio-egressgateway
-  namespace: istio-system
-  labels:
-    app: egressgateway
-    chart: gateways-1.0.0
-    release: istio
-    heritage: Tiller
-    app: istio-egressgateway
-    istio: egressgateway
-spec:
-  replicas: 1
-  template:
-    metadata:
-      labels:
-        app: istio-egressgateway
-        istio: egressgateway
-      annotations:
-        sidecar.istio.io/inject: "false"
-        scheduler.alpha.kubernetes.io/critical-pod: ""
-    spec:
-      serviceAccountName: istio-egressgateway-service-account
-      containers:
-        - name: egressgateway
-          image: "docker.io/istio/proxyv2:1.0.0"
-          imagePullPolicy: IfNotPresent
-          ports:
-            - containerPort: 80
-            - containerPort: 443
-          args:
-          - proxy
-          - router
-          - -v
-          - "2"
-          - --discoveryRefreshDelay
-          - '1s' #discoveryRefreshDelay
-          - --drainDuration
-          - '45s' #drainDuration
-          - --parentShutdownDuration
-          - '1m0s' #parentShutdownDuration
-          - --connectTimeout
-          - '10s' #connectTimeout
-          - --serviceCluster
-          - istio-egressgateway
-          - --zipkinAddress
-          - zipkin:9411
-          - --statsdUdpAddress
-          - istio-statsd-prom-bridge:9125
-          - --proxyAdminPort
-          - "15000"
-          - --controlPlaneAuthPolicy
-          - NONE
-          - --discoveryAddress
-          - istio-pilot.istio-system:8080
-          resources:
-            requests:
-              cpu: 10m
-            
-          env:
-          - name: POD_NAME
-            valueFrom:
-              fieldRef:
-                apiVersion: v1
-                fieldPath: metadata.name
-          - name: POD_NAMESPACE
-            valueFrom:
-              fieldRef:
-                apiVersion: v1
-                fieldPath: metadata.namespace
-          - name: INSTANCE_IP
-            valueFrom:
-              fieldRef:
-                apiVersion: v1
-                fieldPath: status.podIP
-          - name: ISTIO_META_POD_NAME
-            valueFrom:
-              fieldRef:
-                fieldPath: metadata.name
-          volumeMounts:
-          - name: istio-certs
-            mountPath: /etc/certs
-            readOnly: true
-          - name: egressgateway-certs
-            mountPath: "/etc/istio/egressgateway-certs"
-            readOnly: true
-          - name: egressgateway-ca-certs
-            mountPath: "/etc/istio/egressgateway-ca-certs"
-            readOnly: true
-      volumes:
-      - name: istio-certs
-        secret:
-          secretName: istio.istio-egressgateway-service-account
-          optional: true
-      - name: egressgateway-certs
-        secret:
-          secretName: "istio-egressgateway-certs"
-          optional: true
-      - name: egressgateway-ca-certs
-        secret:
-          secretName: "istio-egressgateway-ca-certs"
-          optional: true
       affinity:      
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
@@ -3639,28 +3472,6 @@ spec:
         host: grafana.istio-system.svc.cluster.local
         port:
           number: 3000
----
-
----
-# Source: istio/charts/gateways/templates/autoscale.yaml
-
-apiVersion: autoscaling/v2beta1
-kind: HorizontalPodAutoscaler
-metadata:
-    name: istio-egressgateway
-    namespace: istio-system
-spec:
-    maxReplicas: 5
-    minReplicas: 1
-    scaleTargetRef:
-      apiVersion: apps/v1beta1
-      kind: Deployment
-      name: istio-egressgateway
-    metrics:
-      - type: Resource
-        resource:
-          name: cpu
-          targetAverageUtilization: 60
 ---
 apiVersion: autoscaling/v2beta1
 kind: HorizontalPodAutoscaler
