@@ -1,0 +1,12 @@
+apiVersion: "config.istio.io/v1alpha2"
+kind: metric
+metadata:
+  name: serviceSentbytes
+  namespace: istio-system
+spec:
+  value: connection.sent.bytes | 0
+  dimensions:
+    source_service: source.workload.name | "unknown"
+    source_version: source.labels["version"] | "unknown"
+    destination_version: destination.labels["version"] | "unknown"
+  monitoredResourceType: '"UNSPECIFIED"'
