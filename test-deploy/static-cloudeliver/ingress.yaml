@@ -1,0 +1,47 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: dynajs-gateway
+  namespace: dynajs
+spec:
+  selector:
+    istio: ingressgateway
+  servers:
+  - port:
+      number: 80
+      name: http
+      protocol: HTTP
+    hosts:
+    - "static.cloudeliver.cn"
+  - port:
+      number: 443
+      name: https
+      protocol: HTTPS
+    hosts:
+    - "static.cloudeliver.cn"
+    tls:
+      mode: SIMPLE
+      serverCertificate: /etc/istio/ingressgatewayi-ca-certs/tls.crt
+      privateKey: /etc/istio/ingressgateway-ca-certs/tls.key
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: dynajs-service
+  namespace: dynajs
+spec:
+  hosts:
+  - "static.cloudeliver.cn"
+  gateways:
+  - dynajs-gateway
+  http:
+  - match:
+    - uri:
+        prefix: /dyna/
+    rewrite:
+      uri: /
+    route:
+    - destination:
+        port:
+          number: 8080
+        host: dyna-svc

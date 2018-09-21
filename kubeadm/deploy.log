@@ -1,0 +1,2 @@
+# 2018-09-12 Deploy
+kubeadm join 10.7.0.194:6443 --token zzu17o.vx78v8fgp76o99tm --discovery-token-ca-cert-hash sha256:b81a1b0a68374a9ee50f9da8bd2b823d61d16e75397113f3a2ba919993555595

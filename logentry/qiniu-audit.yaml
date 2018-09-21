@@ -1,0 +1,23 @@
+apiVersion: config.istio.io/v1alpha2
+kind: logentry
+metadata:
+  name: qiniu-audit
+  namespace: istio-system
+spec:
+  monitored_resource_type: '"global"'
+  severity: '"Info"'
+  timestamp: request.time
+  variables:
+    request: request.path | ""
+    status: response.code | 0
+    body_bytes_sent: response.total_size | 0
+    http_referer: request.referer | ""
+    http_user_agent: request.useragent | ""
+    http_x_forwarded_for: request.headers["x-forwarded-for"] | "0.0.0.0"
+    remote_addr: request.headers["x-forwarded-for"] | "0.0.0.0"
+    upstream_addr: source.ip | ip("0.0.0.0")
+    host: request.headers[":authority"] | request.host | ""
+    upstream_response_time: response.duration | "0ms"
+    request_time: request.time
+    request_length: request.size | 0
+    request_id: request.headers["x-request-id"] | ""

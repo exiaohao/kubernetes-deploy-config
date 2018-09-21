@@ -2,7 +2,7 @@ apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2
 kind: Deployment
 metadata:
   name: debugger
-  namespace: test-deploy
+  namespace: songhao
 spec:
   selector:
     matchLabels:
@@ -18,8 +18,5 @@ spec:
         image:     reg.qiniu.com/exiaohao/ubuntu-toolos:latest
         command: [ "/bin/bash", "-c", "--" ]
         args: [ "while true; do sleep 30; done;" ]
-        resources:
-          limits:
-            memory: "1024M"
       imagePullSecrets:
-      - name: qiniu
+      - name: songhao.qiniu

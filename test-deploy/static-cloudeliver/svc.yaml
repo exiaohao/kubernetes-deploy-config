@@ -1,0 +1,48 @@
+apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2
+kind: Deployment
+metadata:
+  name: dynajs-app
+  namespace: dynajs
+  labels:
+    app: dyna-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dyna-app
+  template: # create pods using pod definition in this template
+    metadata:
+      labels:
+        app: dyna-app
+    spec:
+      containers:
+      - name: dynajs-app
+        image: reg.qiniu.com/exiaohao/dyna-js:v1.0
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8080
+        command: ['/go/src/github.com/exiaohao/dyna-js/dist/server']
+        env:
+        - name: GIN_MODE
+          value: release
+        resources:
+          limits:
+            memory: "1024M"
+      imagePullSecrets:
+      - name: qiniu
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: dynajs
+  name: dyna-svc
+spec:
+  ports:
+  - name: http
+    port: 8080
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    app: dyna-app
+  sessionAffinity: None
+  type: ClusterIP
