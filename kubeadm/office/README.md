@@ -25,6 +25,11 @@ systemctl restart docker
 systemctl restart kubelet
 ```
 
+Addresses
+- etcd: http://100.100.62.193:2379
+- calico ipv4 pool: 10.100.0.0/16
+- cluster IPs: 100.100.62.193-196
+
 Create Kubernetes Cluster
 ```bash
 kubeadm init --config=kubeadm-init-config.yaml
