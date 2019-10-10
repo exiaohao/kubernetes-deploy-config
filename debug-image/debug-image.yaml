@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: debugger
-        image:     reg.qiniu.com/exiaohao/ubuntu-toolos:latest
+        image: amouat/network-utils
         command: [ "/bin/bash", "-c", "--" ]
         args: [ "while true; do sleep 30; done;" ]
       imagePullSecrets:
